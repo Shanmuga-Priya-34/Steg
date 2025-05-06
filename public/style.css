@@ -1,78 +1,76 @@
-/* General Body Style */
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
-  background-color: #f0f8ff;
-  color: #333;
+  background-color: #e6f0ff;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #003366;
+  color: white;
+  padding: 15px;
   text-align: center;
 }
 
-h1 {
-  color: #007acc;
+main {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+section {
+  margin-bottom: 30px;
 }
 
 h2 {
-  color: #005f99;
+  color: #003366;
 }
 
 textarea {
-  width: 80%;
-  height: 100px;
-  margin: 10px 0;
+  width: 100%;
+  height: 80px;
   padding: 10px;
   font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  resize: none;
-  background-color: #f9f9f9;
+  margin-top: 10px;
 }
 
 input[type="file"] {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+  margin-top: 10px;
+}
+
+canvas {
+  display: block;
+  margin-top: 20px;
+  max-width: 100%;
 }
 
 button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #007acc;
+  background-color: #0059b3;
   color: white;
+  padding: 10px 20px;
+  margin-top: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
 }
 
 button:hover {
-  background-color: #005f99;
+  background-color: #004080;
 }
 
-a {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 16px;
-  background-color: #28a745;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-}
-
-a:hover {
-  background-color: #218838;
-}
-
-hr {
-  border: 1px solid #ccc;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-#canvas {
+#downloadLink {
   display: none;
-  margin-top: 20px;
-  border: 1px solid #ccc;
+  margin-top: 15px;
+  text-decoration: none;
+  color: #0059b3;
+  font-weight: bold;
+}
+
+#decodedMessage {
+  width: 100%;
+  height: 60px;
+  margin-top: 10px;
 }

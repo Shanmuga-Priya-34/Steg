@@ -1,83 +1,92 @@
-let img = new Image();
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+document.getElementById("upload").addEventListener("change", function () {
+  const file = this.files[0];
+  if (!file) return;
 
-document.getElementById("imageUpload").addEventListener("change", function(e) {
   const reader = new FileReader();
-  reader.onload = function(event) {
-    img.onload = () => {
+  reader.onload = function (e) {
+    const img = new Image();
+    img.onload = function () {
+      const canvas = document.getElementById("canvas");
       canvas.width = img.width;
       canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0);
-      canvas.style.display = "block";
     };
-    img.src = event.target.result;
+    img.src = e.target.result;
   };
-  reader.readAsDataURL(e.target.files[0]);
+  reader.readAsDataURL(file);
 });
 
-// Encode Message in Blue Channel LSB
-function encodeMessage() {
-  const message = document.getElementById("message").value + "||END||"; // Append end marker
-  if (!message) return alert("Please enter a message.");
+function messageToBinary(message) {
+  return message.split("").map(char =>
+    char.charCodeAt(0).toString(2).padStart(8, '0')
+  ).join('');
+}
 
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const binaryMsg = messageToBinary(message);
+function binaryToMessage(binary) {
+  const chars = binary.match(/.{1,8}/g);
+  return chars.map(byte => String.fromCharCode(parseInt(byte, 2))).join('');
+}
 
-  let data = imgData.data;
-  if (binaryMsg.length > data.length / 4) {
-    alert("Message is too long for this image.");
+function handleEncode() {
+  const message = document.getElementById("message").value + "||END||";
+  const binaryMessage = messageToBinary(message);
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+
+  if (binaryMessage.length > data.length / 4) {
+    alert("Message too long for the selected image.");
     return;
   }
 
-  // Encoding message into the blue channel LSB
-  for (let i = 0; i < binaryMsg.length; i++) {
-    data[i * 4 + 2] = (data[i * 4 + 2] & 0xFE) | parseInt(binaryMsg[i]); // Blue channel
+  for (let i = 0; i < binaryMessage.length; i++) {
+    data[i * 4 + 2] = (data[i * 4 + 2] & 0xFE) | parseInt(binaryMessage[i]);
   }
 
-  ctx.putImageData(imgData, 0, 0);
+  ctx.putImageData(imageData, 0, 0);
 
-  const encodedURL = canvas.toDataURL();
   const link = document.getElementById("downloadLink");
-  link.href = encodedURL;
+  link.href = canvas.toDataURL();
   link.style.display = "inline-block";
-  link.textContent = "Download Encoded Image";
 }
 
-// Convert message to binary (8 bits per character)
-function messageToBinary(message) {
-  return message.split('').map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join('');
-}
+function decodeMessage() {
+  const file = document.getElementById("decodeUpload").files[0];
+  if (!file) {
+    alert("Please upload an image to decode.");
+    return;
+  }
 
-// Decode Message from Blue Channel LSB
-document.getElementById("decodeUpload").addEventListener("change", function(e) {
   const reader = new FileReader();
-  reader.onload = function(event) {
+  reader.onload = function (event) {
     const img = new Image();
-    img.onload = () => {
+    img.onload = function () {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
       let binary = "";
-      // Decode from the blue channel LSB
+
       for (let i = 0; i < imgData.length; i += 4) {
-        binary += (imgData[i + 2] & 1); // Read LSB of blue channel
+        binary += (imgData[i + 2] & 1);
       }
 
-      const chars = binary.match(/.{1,8}/g); // Group every 8 bits (1 byte)
+      const chars = binary.match(/.{1,8}/g);
       let message = "";
       for (let i = 0; i < chars.length; i++) {
         const char = String.fromCharCode(parseInt(chars[i], 2));
-        if (char === '\0') break; // End of message (null byte)
         message += char;
-        if (message.endsWith("||END||")) break; // End marker check
+        if (message.includes("||END||")) break;
       }
 
       document.getElementById("decodedMessage").value = message.replace("||END||", "");
     };
     img.src = event.target.result;
   };
-  reader.readAsDataURL(e.target.files[0]);
-});
+  reader.readAsDataURL(file);
+}
