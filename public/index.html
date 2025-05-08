@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Steganography Tool</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -35,13 +35,7 @@
     <section id="dashboardSection" style="display:none;">
       <h2>Welcome, <span id="userNameDisplay"></span></h2>
       <p>Your access is: <span id="accessStatus">Logged In</span></p>
-      <p>Rules:</p>
-      <ul>
-        <li>✅ Only PNG files allowed</li>
-        <li>✅ Max image size: 5MB</li>
-        <li>🚫 No restricted keywords (e.g., kill, hack)</li>
-      </ul>
-
+      
       <!-- Steganography Tool Section -->
       <div id="encodeSection">
         <h3>Encode Message</h3>
@@ -58,15 +52,6 @@
         <button onclick="decodeMessage()">Decode</button>
         <textarea id="decodedMessage" placeholder="Decoded message will appear here"></textarea>
       </div>
-
-      <!-- Activity Log Section -->
-      <h3>Activity Log</h3>
-      <table id="activityLog">
-        <thead>
-          <tr><th>Action</th><th>Status</th><th>Time</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
     </section>
   </main>
 

@@ -14,13 +14,20 @@ function signup() {
   const username = document.getElementById('newUsername').value;
   const password = document.getElementById('newPassword').value;
 
-  if (username && password) {
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password);
-    showLogin();
-  } else {
-    alert('Please fill in all fields.');
-  }
+  fetch('/signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('Signup successful!');
+      showLogin();
+    } else {
+      alert('Signup failed.');
+    }
+  });
 }
 
 // Login logic
@@ -28,16 +35,21 @@ function login() {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
-  const storedUsername = localStorage.getItem('username');
-  const storedPassword = localStorage.getItem('password');
-
-  if (username === storedUsername && password === storedPassword) {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('dashboardSection').style.display = 'block';
-    document.getElementById('userNameDisplay').innerText = username;
-  } else {
-    document.getElementById('loginError').innerText = 'Invalid credentials. Please try again.';
-  }
+  fetch('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('dashboardSection').style.display = 'block';
+      document.getElementById('userNameDisplay').innerText = username;
+    } else {
+      document.getElementById('loginError').innerText = 'Invalid credentials.';
+    }
+  });
 }
 
 // Steganography encode logic
@@ -97,8 +109,6 @@ function encodeMessage() {
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
-
-  logActivity('Encoded Message', 'Success');
 }
 
 // Steganography decode logic
@@ -120,31 +130,20 @@ function decodeMessage() {
       ctx.drawImage(img, 0, 0);
 
       const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      let binary = "";
-
+      let binaryMessage = '';
       for (let i = 0; i < imgData.length; i += 4) {
-        binary += (imgData[i + 2] & 1);
+        binaryMessage += imgData[i + 2] & 1;
       }
 
-      let message = "";
-      for (let i = 0; i < binary.length; i += 8) {
-        message += String.fromCharCode(parseInt(binary.slice(i, i + 8), 2));
-        if (message.includes("||END||")) break;
+      let message = binaryToMessage(binaryMessage);
+      const delimiterIndex = message.indexOf('||END||');
+      if (delimiterIndex !== -1) {
+        message = message.slice(0, delimiterIndex);
       }
 
-      document.getElementById('decodedMessage').value = message.replace("||END||", "");
-
-      logActivity('Decoded Message', 'Success');
+      document.getElementById('decodedMessage').value = message;
     };
     img.src = event.target.result;
   };
   reader.readAsDataURL(file);
-}
-
-// Log activity function
-function logActivity(action, status) {
-  const timestamp = new Date().toLocaleString();
-  const activityLog = document.getElementById('activityLog').getElementsByTagName('tbody')[0];
-  const row = activityLog.insertRow();
-  row.innerHTML = `<td>${timestamp}</td><td>${action}</td><td>${status}</td>`;
 }

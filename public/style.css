@@ -1,32 +1,131 @@
+/* General body styling */
 body {
   font-family: Arial, sans-serif;
-  background-color: #e6f0ff;
+  background-color: #e6f0ff; /* Light blue background */
   margin: 0;
   padding: 0;
+  color: #003366; /* Dark blue text */
 }
 
+/* Header section */
 header {
-  background-color: #003366;
+  background-color: #003366; /* Dark blue */
   color: white;
-  padding: 15px;
+  padding: 20px;
   text-align: center;
 }
 
+/* Main content area */
 main {
   padding: 20px;
   max-width: 800px;
   margin: auto;
   background: white;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Section styles */
 section {
   margin-bottom: 30px;
 }
 
-h2 {
+/* Headings styling */
+h1, h2, h3 {
   color: #003366;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+/* Form input fields */
+input[type="text"], input[type="password"], input[type="file"], textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+  border-color: #0059b3; /* Blue border on focus */
+}
+
+/* Buttons */
+button {
+  background-color: #0059b3; /* Blue background */
+  color: white;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #004080; /* Darker blue on hover */
+}
+
+/* Links styling */
+a {
+  color: #0059b3; /* Blue link color */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Error messages */
+#errorMessage {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Canvas display */
+canvas {
+  display: block;
+  margin-top: 20px;
+  max-width: 100%;
+}
+
+/* Activity Log */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #0059b3; /* Blue header */
+  color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #e6f0ff; /* Light blue on hover */
+}
+
+/* File input and message box */
+input[type="file"] {
+  margin-top: 10px;
 }
 
 textarea {
@@ -35,42 +134,10 @@ textarea {
   padding: 10px;
   font-size: 16px;
   margin-top: 10px;
-}
-
-input[type="file"] {
-  margin-top: 10px;
-}
-
-canvas {
-  display: block;
-  margin-top: 20px;
-  max-width: 100%;
-}
-
-button {
-  background-color: #0059b3;
-  color: white;
-  padding: 10px 20px;
-  margin-top: 10px;
-  border: none;
   border-radius: 5px;
-  cursor: pointer;
+  border: 1px solid #ccc;
 }
 
-button:hover {
-  background-color: #004080;
-}
-
-#downloadLink {
-  display: none;
-  margin-top: 15px;
-  text-decoration: none;
-  color: #0059b3;
-  font-weight: bold;
-}
-
-#decodedMessage {
-  width: 100%;
-  height: 60px;
-  margin-top: 10px;
+textarea:focus {
+  border-color: #0059b3;
 }
