@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors');
+app.use(cors());
 
 const app = express();
 const PORT = 3000;
