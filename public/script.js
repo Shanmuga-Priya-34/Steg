@@ -14,7 +14,7 @@ function signup() {
   const username = document.getElementById('newUsername').value;
   const password = document.getElementById('newPassword').value;
 
-  fetch('http://173.232.112.158:3000/signup', {
+  fetch('http://173.232.112.158:3000/signup', {  // Ensure URL points to your backend's signup endpoint
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
@@ -23,10 +23,14 @@ function signup() {
   .then(data => {
     if (data.success) {
       alert('Signup successful!');
-      showLogin();
+      showLogin();  // Switch to login view after successful signup
     } else {
-      alert('Signup failed.');
+      alert('Signup failed: ' + data.message || 'Please try again.');
     }
+  })
+  .catch(error => {
+    console.error('Error during signup:', error);
+    alert('Error during signup. Please try again.');
   });
 }
 
@@ -35,7 +39,7 @@ function login() {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
-  fetch('http://173.232.112.158:3000/login', {
+  fetch('http://173.232.112.158:3000/login', {  // Ensure URL points to your backend's login endpoint
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
@@ -49,6 +53,10 @@ function login() {
     } else {
       document.getElementById('loginError').innerText = 'Invalid credentials.';
     }
+  })
+  .catch(error => {
+    console.error('Error during login:', error);
+    document.getElementById('loginError').innerText = 'An error occurred. Please try again later.';
   });
 }
 
@@ -65,7 +73,7 @@ function binaryToMessage(binary) {
 }
 
 function encodeMessage() {
-  const message = document.getElementById('message').value + "||END||";
+  const message = document.getElementById('message').value + "||END||";  // Add delimiter to mark the end of the message
   const binaryMessage = messageToBinary(message);
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
@@ -94,17 +102,18 @@ function encodeMessage() {
         return;
       }
 
+      // Embed the binary message into the image's pixel data
       for (let i = 0; i < binaryMessage.length; i++) {
         data[i * 4 + 2] = (data[i * 4 + 2] & 0xFE) | parseInt(binaryMessage[i]);
       }
 
       ctx.putImageData(imageData, 0, 0);
 
-      // Now set the download link to the encoded image
+      // Set the download link for the encoded image
       const link = document.getElementById('downloadLink');
       link.href = canvas.toDataURL('image/png');
       link.style.display = 'inline-block';
-      link.download = 'encoded_image.png'; // Specify the file name for download
+      link.download = 'encoded_image.png';
     };
     img.src = e.target.result;
   };
@@ -132,16 +141,16 @@ function decodeMessage() {
       const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
       let binaryMessage = '';
       for (let i = 0; i < imgData.length; i += 4) {
-        binaryMessage += imgData[i + 2] & 1;
+        binaryMessage += imgData[i + 2] & 1;  // Extract the least significant bit
       }
 
-      let message = binaryToMessage(binaryMessage);
+      let message = binaryToMessage(binaryMessage);  // Convert binary to message
       const delimiterIndex = message.indexOf('||END||');
       if (delimiterIndex !== -1) {
         message = message.slice(0, delimiterIndex);
       }
 
-      document.getElementById('decodedMessage').value = message;
+      document.getElementById('decodedMessage').value = message;  // Show decoded message
     };
     img.src = event.target.result;
   };
