@@ -14,7 +14,7 @@ function signup() {
   const username = document.getElementById('newUsername').value;
   const password = document.getElementById('newPassword').value;
 
-  fetch('/signup', {
+  fetch('http://173.232.112.158:3000/signup', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
@@ -35,7 +35,7 @@ function login() {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
-  fetch('/login', {
+  fetch('http://173.232.112.158:3000/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
