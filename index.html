@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Steganography Tool</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Steganography Tool</h1>
+  </header>
+
+  <main>
+    <!-- Login Section -->
+    <section id="loginSection">
+      <h2>Login</h2>
+      <form id="loginForm" onsubmit="return handleLogin(event)">
+        <input type="text" id="loginUsername" placeholder="Username" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="javascript:void(0)" onclick="showSignupForm()">Sign up</a></p>
+    </section>
+
+    <!-- Signup Section -->
+    <section id="signupSection" style="display:none;">
+      <h2>Sign Up</h2>
+      <form id="signupForm" onsubmit="return handleSignup(event)">
+        <input type="text" id="signupUsername" placeholder="Username" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+      <p>Already have an account? <a href="javascript:void(0)" onclick="showLoginForm()">Login</a></p>
+    </section>
+
+    <!-- Steganography Tool (encode/decode) -->
+    <section id="encodeSection" style="display:none;">
+      <h2>Encode Message</h2>
+      <input type="file" id="upload" accept="image/*">
+      <textarea id="message" placeholder="Enter message to hide..."></textarea>
+      <button onclick="handleEncode()">Encode & Download</button>
+      <a id="downloadLink" download="encoded.png">Download Encoded Image</a>
+    </section>
+
+    <section id="decodeSection" style="display:none;">
+      <h2>Decode Message</h2>
+      <input type="file" id="decodeUpload" accept="image/*">
+      <button onclick="decodeMessage()">Decode</button>
+      <textarea id="decodedMessage" readonly></textarea>
+    </section>
+
+    <canvas id="canvas" style="display:none;"></canvas>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
